@@ -41,12 +41,12 @@ class UserModel {
 }
 
 class UsersModel {
-  UsersModel({required this.products});
+  UsersModel({required this.users});
 
-  final List<UserModel> products;
+  final List<UserModel> users;
   
   factory UsersModel.fromJson(List<dynamic> json){
     List<UserModel> lista = json.map((student) => UserModel.fromJson(student)).toList();
-    return UsersModel(products: lista);
+    return UsersModel(users: lista);
   }
 }
