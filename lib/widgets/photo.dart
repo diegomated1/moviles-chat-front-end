@@ -17,7 +17,7 @@ class Photo extends StatelessWidget {
 
     final width = MediaQuery.of(context).size.width;
     String url = dotenv.env['CHAT_SOCKET_URL']!;
-
+    
     return Container(
       width: double.infinity,
       height: double.infinity,
