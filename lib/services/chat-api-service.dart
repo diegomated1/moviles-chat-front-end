@@ -65,6 +65,24 @@ class ChatApi {
     }
   }
 
+  Future<UserModel?> getByEmail({required String email}) async {
+    try{
+      var headers = {
+        "Content-type": "application/json",
+      };
+
+      var response = await http.get(Uri.parse('$url/users/$email'), headers: headers);
+      if(response.statusCode == 200){
+        return UserModel.fromJson(json.decode(response.body)['data']);
+      } else {
+        return null;
+      }
+    }catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
   Future<UsersModel> getUsers() async {
     try{
       var headers = {
