@@ -4,6 +4,7 @@ class Input extends StatelessWidget {
   const Input({
     super.key,
     this.type = TextInputType.text,
+    this.width = 330,
     this.padding = 10.0,
     this.hidden = false,
     required this.labelText,
@@ -14,12 +15,13 @@ class Input extends StatelessWidget {
   final String labelText;
   final double padding;
   final bool hidden;
+  final double width;
   final Function(String labelText, String newValue) handler;
 
   @override
   Widget build(BuildContext context) { 
     return Container (
-      width: 330,
+      width: width,
       padding: EdgeInsets.all(padding),
       child: TextFormField(
         keyboardType: type,
