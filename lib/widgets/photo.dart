@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../utils/utils.dart';
 
 class Photo extends StatelessWidget {
   const Photo({
     super.key,
-    required this.id
+    required this.email
   });
 
-  final String id;
+  final String email;
 
   @override
   Widget build(BuildContext context) {
 
     final width = MediaQuery.of(context).size.width;
-    String url = 'http://10.153.50.46:3000/images/products';
+    String url = dotenv.env['CHAT_SOCKET_URL']!;
 
     return Container(
       width: double.infinity,
@@ -35,7 +36,7 @@ class Photo extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         child: 
         CachedNetworkImage(
-          imageUrl: '$url/$id',
+          imageUrl: '$url/images/$email',
           fit: BoxFit.fill,
           errorWidget: ((context, url, error) {
             return Container(
