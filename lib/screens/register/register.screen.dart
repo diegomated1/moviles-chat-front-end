@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/button.dart';
 import '../../widgets/input.dart';
+import '../loading/loading.screen.dart';
+import '../login/login.screen.dart';
 
 class Register extends StatefulWidget{
   const Register({super.key});
@@ -39,7 +41,7 @@ class _Register extends State<Register> {
       if(sessionToken!=null){
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('sessionToken', sessionToken);
-        Get.to(()=>const Profile());
+        Get.to(()=>const LoadingScreen());
       }else{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
@@ -78,6 +80,9 @@ class _Register extends State<Register> {
                 Button(labelText: 'Register', handler: (){
                   submit(context);
                 }),
+                Button(labelText: 'Login', handler: (){
+                  Get.to(()=>const Login());
+                },),
               ],
             ),
           ),

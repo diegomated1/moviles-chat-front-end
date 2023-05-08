@@ -1,4 +1,6 @@
+import 'package:chat_client/screens/loading/loading.screen.dart';
 import 'package:chat_client/screens/profile/profile.screen.dart';
+import 'package:chat_client/screens/register/register.screen.dart';
 import 'package:chat_client/services/chat-api-service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +36,7 @@ class _Login extends State<Login> {
       if(sessionToken!=null){
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('sessionToken', sessionToken);
-        Get.to(()=>const Profile());
+        Get.to(()=>const LoadingScreen());
       }else{
         if(mounted){
           ScaffoldMessenger.of(context).showSnackBar(
@@ -64,6 +66,9 @@ class _Login extends State<Login> {
                 Input(labelText: 'Password', handler: change, hidden: true,),
                 Button(labelText: 'Login', handler: (){
                   submit(context);
+                },),
+                Button(labelText: 'Register', handler: (){
+                  Get.to(()=>const Register());
                 },),
               ],
             ),
