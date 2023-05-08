@@ -1,4 +1,6 @@
 import 'package:chat_client/models/user.model.dart';
+import 'package:chat_client/screens/profile/widgets/profile-other.user.widget.dart';
+import 'package:chat_client/screens/profile/widgets/profile-user.widget.dart';
 import 'package:chat_client/screens/users/users.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import '../../services/chat-api-service.dart';
 import '../../widgets/button.dart';
 import '../../widgets/input.dart';
 import '../login/login.screen.dart';
+import '../users/widgets/tarjeta.dart';
 
 class Profile extends StatefulWidget{
   const Profile({super.key});
@@ -18,36 +21,38 @@ class Profile extends StatefulWidget{
 
 class _Profile extends State<Profile>{
 
-  late UserModel? user;
+  UserModel? user;
+  bool isUser = false;
 
   @override
   void initState() {
     super.initState();
     handleAuth() async {
-      final prefs = await SharedPreferences.getInstance();
-      final sessionToken = prefs.getString('sessionToken');
-      if(sessionToken!=null){
-        final userApi = await ChatApi().auth(sessionToken: sessionToken);
-        if(userApi!=null){
-          user = userApi;
+      try{
+        final String? email = Get.arguments;
+        if(email!=null){
+          var userApi = await ChatApi().getByEmail(email: email);
+          setState(() {
+            user = userApi;
+          });
         }else{
-          Get.to(()=>const Login());
+          final prefs = await SharedPreferences.getInstance();
+          final sessionToken = prefs.getString('sessionToken');
+          if(sessionToken!=null){
+            var userApi = await ChatApi().auth(sessionToken: sessionToken);
+            setState(() {
+              user = userApi;
+              isUser = true;
+            });
+          }else{
+            Get.to(()=>const Login());
+          }
         }
-      }else{
+      }catch(error){
         Get.to(()=>const Login());
-      } 
+      }
     }
     handleAuth();
-  }
-
-
-  handleLogout() async {
-    if(user!=null){
-      await ChatApi().deleteToken(email: user!.email, tokenFCM: '123');
-      final prefs = await SharedPreferences.getInstance();
-      prefs.remove('sessionToken');
-      Get.to(()=>const Login());
-    }
   }
 
   @override
@@ -58,21 +63,11 @@ class _Profile extends State<Profile>{
       ),
       body: Center(
         child: FittedBox(
-          child: Column(
-            children: [
-              Text(
-                (user!=null)?'Bienvenido ${user!.name}':'',
-                style: const TextStyle(
-                  fontSize: 20
-                ),
-              ),
-              const SizedBox(height: 20,),
-              Button(labelText: 'usaurios', handler: (){
-                Get.to(()=>const Users());
-              },),
-              Button(labelText: 'Cerrar sesion', handler: handleLogout,),
-            ],
-          ),
+          child: (user!=null) ?
+            (isUser) ? 
+              ProfileUser(user: user!) :
+              ProfileOtherUser(user: user!)
+          : const Text('cargando')
         ),
       ),
     );
