@@ -62,8 +62,8 @@ class _Login extends State<Login> {
             key: loginForm,
             child: Column(
               children: [
-                Input(labelText: 'Email', handler: change),
-                Input(labelText: 'Password', handler: change, hidden: true,),
+                Input(labelText: 'Email', handler: change, width: 330,),
+                Input(labelText: 'Password', handler: change, hidden: true, width: 330),
                 Button(labelText: 'Login', handler: (){
                   submit(context);
                 },),

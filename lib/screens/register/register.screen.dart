@@ -19,7 +19,7 @@ class Register extends StatefulWidget{
 
 class _Register extends State<Register> {
 
-  late Map<String, String> userInfo = {
+  late Map<String, dynamic> userInfo = {
     "email": '',
     "name": '',
     "second_name": '',
@@ -37,7 +37,7 @@ class _Register extends State<Register> {
   submit(BuildContext context)async{
     if(loginForm.currentState!.validate()){
       loginForm.currentState!.save();
-      var sessionToken = await ChatApi().register(user: UserModel.fromJson(userInfo));
+      var sessionToken = await ChatApi().register(user: UserModel.fromJson({...userInfo, "tokens": []}), password: userInfo['password']);
       if(sessionToken!=null){
         final prefs = await SharedPreferences.getInstance();
         prefs.setString('sessionToken', sessionToken);
@@ -67,16 +67,16 @@ class _Register extends State<Register> {
             key: loginForm,
             child: Column(
               children: [
-                Input(labelText: 'Email', handler: change),
+                Input(labelText: 'Email', handler: change, width: 330),
                 Row(
                   children: [
                     Input(labelText: 'Name', handler: change, width: 165,),
                     Input(labelText: 'Second Name', handler: change, width: 165,),
                   ],
                 ),
-                Input(labelText: 'Job Ocupation', handler: change),
-                Input(labelText: 'Number Phone', handler: change, type: TextInputType.number,),
-                Input(labelText: 'Password', handler: change, hidden: true,),
+                Input(labelText: 'Job Ocupation', handler: change, width: 330),
+                Input(labelText: 'Number Phone', handler: change, type: TextInputType.number, width: 330),
+                Input(labelText: 'Password', handler: change, hidden: true, width: 330),
                 Button(labelText: 'Register', handler: (){
                   submit(context);
                 }),
