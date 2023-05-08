@@ -33,7 +33,7 @@ class ChatApi {
       var headers = {
         "Content-type": "application/json",
       };
-      var body = json.encode({"email": email, "password": password, "token": tokenFCM});
+      var body = json.encode({"email": email, "password": password, "tokenFCM": tokenFCM});
       var response = await http.post(Uri.parse('$url/login'), headers: headers, body: body);
       if(response.statusCode == 200){
         return json.decode(response.body)['data'];
@@ -98,6 +98,24 @@ class ChatApi {
     }catch(e){
       print(e.toString());
       return MessagesModel.fromJson([]);
+    }
+  }
+
+  Future<bool> deleteToken({required String email, required String tokenFCM}) async {
+    try{
+      var headers = {
+        "Content-type": "application/json",
+      };
+      var body = json.encode({"token": tokenFCM});
+      var response = await http.put(Uri.parse('$url/users/$email'), headers: headers, body: body);
+      if(response.statusCode == 200){
+        return true;
+      } else {
+        return false;
+      }
+    }catch(e){
+      print(e.toString());
+      return false;
     }
   }
 
