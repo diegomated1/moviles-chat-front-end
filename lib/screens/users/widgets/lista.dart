@@ -47,16 +47,9 @@ class _Lista extends State<Lista> {
             },
           );
         }else{
-          return ListView(
-            children: const [
-              Tarjeta(
-                email: '1', 
-                fullname: 'Diego Cardenas',
-                jobOcupation: 'Ing. Sistemas e Informatica cuatro',
-                numberPhone: '3.0'
-              ),
-            ],
-          ); 
+          return const Center(
+            child: Text('Cargando...'),
+          );
         }
       },
     );
