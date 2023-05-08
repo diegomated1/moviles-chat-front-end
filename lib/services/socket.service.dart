@@ -1,12 +1,21 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:socket_io_client/socket_io_client.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketConnection{
 
-  Socket socket = io(dotenv.env['CHAT_SERVER_URL']!);
+  IO.Socket? socket;
 
-  SocketConnection(){
-    socket.connect();
+  SocketConnection(String user1, String user2){
+    var users = [user1, user2];
+    users.sort();
+
+    socket = IO.io(dotenv.env['CHAT_SOCKET_URL']!, <String, dynamic>{
+      "transports": ["websocket"],
+      "query": {"id_chat": users.join("")}
+    });
+    socket!.onConnect((_) {
+      socket!.emit('msg', 'test');
+    });
   }
 
   sendMessage({
@@ -15,7 +24,7 @@ class SocketConnection{
 		required String title,
 		required String message	
   }){
-    socket.emit('chat:message', {emailUserAddresse, emailUserSender, title, message});
+    socket!.emit('chat:message', {emailUserAddresse, emailUserSender, title, message});
   }
 
 }

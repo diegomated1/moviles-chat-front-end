@@ -7,7 +7,7 @@ import 'dart:convert';
 import '../models/user.model.dart';
 
 class ChatApi {
-  String url = dotenv.env['CHAT_SOCKET_URL']!;
+  String url = dotenv.env['CHAT_SERVER_URL']!;
 
   Future<UserModel?> auth({required String sessionToken}) async {
     try{
@@ -46,12 +46,12 @@ class ChatApi {
     }
   }
 
-  Future<String?> register({required UserModel user}) async {
+  Future<String?> register({required UserModel user, required String password}) async {
     try{
       var headers = {
         "Content-type": "application/json",
       };
-      var body = json.encode({...user.toMap(), "token": '123'});
+      var body = json.encode({...user.toMap(), "token": '123', "password": password});
 
       var response = await http.post(Uri.parse('$url/register'), headers: headers, body: body);
       if(response.statusCode == 200){
