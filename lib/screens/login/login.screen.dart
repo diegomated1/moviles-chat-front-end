@@ -1,7 +1,52 @@
+import 'package:chat_client/screens/profile/profile.screen.dart';
+import 'package:chat_client/services/chat-api-service.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatelessWidget{
+import '../../widgets/button.dart';
+import '../../widgets/input.dart';
+
+class Login extends StatefulWidget{
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _Login();
+}
+
+class _Login extends State<Login> {
+
+  late Map<String, String> userInfo = {
+    "email": '',
+    "password": '',
+  };
+
+  change(String label, String newValue){
+    userInfo[label.split(' ').join('_').toLowerCase()] = newValue;
+  }
+
+  var loginForm = GlobalKey<FormState>();
+
+  submit(BuildContext context)async{
+    if(loginForm.currentState!.validate()){
+      loginForm.currentState!.save();
+      var sessionToken = await ChatApi().login(email: userInfo['email']!, password: userInfo['password']!, tokenFCM: '123');
+      if(sessionToken!=null){
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('sessionToken', sessionToken);
+        Get.to(()=>const Profile());
+      }else{
+        if(mounted){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid credentials'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +54,23 @@ class Login extends StatelessWidget{
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Container()
+      body: Center(
+        child: FittedBox(
+          child: Form(
+            key: loginForm,
+            child: Column(
+              children: [
+                Input(labelText: 'Email', handler: change),
+                Input(labelText: 'Password', handler: change, hidden: true,),
+                Button(labelText: 'Login', handler: (){
+                  submit(context);
+                },),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
+
 }
