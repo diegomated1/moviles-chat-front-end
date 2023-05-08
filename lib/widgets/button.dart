@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class Button extends StatelessWidget {
   const Button({
     super.key,
-    this.width = 80,
-    this.height = 330,
+    this.width = 330,
+    this.height = 80,
     this.fontSize = 22,
     this.labelText = 'Empty',
     this.padding = 10.0,
@@ -22,8 +22,8 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) { 
     return Container (
       padding: EdgeInsets.all(padding),
-      height: width,
-      width: height,
+      height: height,
+      width: width,
       child: ElevatedButton(
         onPressed: handler,
         child: Text(

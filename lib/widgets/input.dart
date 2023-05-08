@@ -4,7 +4,7 @@ class Input extends StatelessWidget {
   const Input({
     super.key,
     this.type = TextInputType.text,
-    this.width = 330,
+    this.width = double.infinity,
     this.padding = 10.0,
     this.hidden = false,
     required this.labelText,
