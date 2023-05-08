@@ -16,8 +16,13 @@ class UserModel {
   final List<String> tokens;
 
   factory UserModel.fromJson(Map<String, dynamic> json){
-    List<dynamic> tokensAny = json['tokens'];
-    List<String> tokens = tokensAny.map((t)=>t.toString()).toList();
+    List<dynamic>? tokensAny = json['tokens'];
+    List<String> tokens;
+    if(tokensAny!=null){
+      tokens = tokensAny.map((t)=>t.toString()).toList();
+    }else{
+      tokens = [];
+    }
     return UserModel(
       email: json['email'],
       name: json['name'],
@@ -46,6 +51,7 @@ class UsersModel {
   final List<UserModel> users;
   
   factory UsersModel.fromJson(List<dynamic> json){
+    print(json);
     List<UserModel> lista = json.map((student) => UserModel.fromJson(student)).toList();
     return UsersModel(users: lista);
   }

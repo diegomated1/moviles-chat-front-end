@@ -10,19 +10,26 @@ class MessageModel {
   
   final String emailUserAddresse;
   final String emailUserSender;
-  final String date;
+  final DateTime date;
   final String title;
   final String message;
-  final List<String> tokens;
+  final List<dynamic> tokens;
 
   factory MessageModel.fromJson(Map<String, dynamic> json){
+    List<dynamic>? tokensAny = json['tokens'];
+    List<String> tokens;
+    if(tokensAny!=null){
+      tokens = tokensAny.map((t)=>t.toString()).toList();
+    }else{
+      tokens = [];
+    }
     return MessageModel(
       emailUserAddresse: json['email_user_addresse'],
       emailUserSender: json['email_user_sender'],
-      date: json['second_email_user_sender'],
-      title: json['job_ocupation'],
-      message: json['number_phone'],
-      tokens: json['tokens'],
+      date: DateTime.parse(json['date']),
+      title: json['title'],
+      message: json['message'],
+      tokens: tokens,
     );
   }
 
@@ -30,21 +37,21 @@ class MessageModel {
     return {
       'email_user_addresse': emailUserAddresse,
       'email_user_sender': emailUserSender,
-      'second_email_user_sender': date,
-      'job_ocupation': title,
-      'number_phone': message,
+      'date': date,
+      'title': title,
+      'message': message,
       'tokens': tokens,
     };
   }
 }
 
 class MessagesModel {
-  MessagesModel({required this.products});
+  MessagesModel({required this.messages});
 
-  final List<MessageModel> products;
+  final List<MessageModel> messages;
   
   factory MessagesModel.fromJson(List<dynamic> json){
     List<MessageModel> lista = json.map((student) => MessageModel.fromJson(student)).toList();
-    return MessagesModel(products: lista);
+    return MessagesModel(messages: lista);
   }
 }
