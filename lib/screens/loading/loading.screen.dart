@@ -10,7 +10,7 @@ class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
 
   @override
-  _LoadingScreen createState() => _LoadingScreen();
+  State<LoadingScreen> createState() => _LoadingScreen();
 }
 
 class _LoadingScreen extends State<LoadingScreen> {
@@ -18,6 +18,7 @@ class _LoadingScreen extends State<LoadingScreen> {
 
   @override
   void initState() {
+    super.initState();
     handleAuth() async {
       final prefs = await SharedPreferences.getInstance();
       final sessionToken = prefs.getString('sessionToken');
