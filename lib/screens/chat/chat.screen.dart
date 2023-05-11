@@ -1,5 +1,7 @@
 import 'package:chat_client/models/message.model.dart';
-import 'package:chat_client/screens/chat/widgets/chat.widget.dart';
+import 'package:chat_client/screens/chat/widgets/chat-header-info.widget.dart';
+import 'package:chat_client/screens/chat/widgets/chat-history-messages.widget.dart';
+import 'package:chat_client/screens/chat/widgets/chat-input.widget.dart';
 import 'package:chat_client/screens/users/users.screen.dart';
 import 'package:chat_client/services/socket.service.dart';
 import 'package:chat_client/widgets/button.dart';
@@ -11,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/user.model.dart';
 import '../../services/chat-api-service.dart';
 import '../../utils/utils.dart';
+import '../../widgets/IconImage.dart';
 import '../login/login.screen.dart';
 
 
@@ -24,28 +27,9 @@ class _Chat extends State<Chat>{
   UserModel? user;
   UserModel? otherUser;
   MessagesModel messages = MessagesModel.fromJson([]);
-  SocketConnection? socket;
+  SocketConnection? socket;  
+  final ScrollController _scrollController = ScrollController();
 
-  var sendForm = GlobalKey<FormState>();
-  String mensaje = "";
-
-  submit(BuildContext context)async{
-    if(user!=null && otherUser!=null){
-      if(sendForm.currentState!.validate()){
-        sendForm.currentState!.save();
-        sendMessage(
-          emailUserAddresse: otherUser!.email,
-          emailUserSender: user!.email,
-          title: "titulo",
-          message: mensaje
-        );
-        setState(() {
-          mensaje = "";
-        });
-      }
-    }
-  }
-   
   @override
   void initState() {
     super.initState();
@@ -137,7 +121,7 @@ class _Chat extends State<Chat>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text((otherUser!=null) ? otherUser!.email : 'Chat'),
+        title:  ChatHeaderInfo(user: otherUser),
       ),
       body: (user!=null) ?
         Column(
@@ -145,38 +129,18 @@ class _Chat extends State<Chat>{
             Expanded(
               flex: 1,
               child: Container(
-                color: getColor(),
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
-                child: ChatWidget(messages: messages, sender: user!.email)
+                child: ChatHistoryWidget(
+                  messages: messages,
+                  sender: user!.email,
+                  scrollController: _scrollController
+                )
               ),
             ),
             SizedBox(
               height: 100,
-              child: Container(
-                color: getColor(),
-                child: Row(
-                  children: [
-                    Form(
-                      key: sendForm,
-                      child: Container (
-                        width: 300,
-                        padding: const EdgeInsets.all(10.0),
-                        child: TextFormField(
-                          onSaved: (value){
-                            mensaje = value ?? '';
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Escribe un mensaje',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Button(labelText: '>', width: 80, height: 80, handler: (){
-                      submit(context);
-                    })
-                  ],
-                ),
+              child: Center(
+                child: ChatInput(sendMessage: sendMessage, user: user, otherUser: otherUser)
               ),
             )
           ],

@@ -8,15 +8,20 @@ class Button extends StatelessWidget {
     this.fontSize = 22,
     this.labelText = 'Empty',
     this.padding = 10.0,
+    this.radius = 16.0,
+    this.child,
     required this.handler
   });
 
+  final double radius;
   final String labelText;
   final double width;
   final double height;
   final double fontSize;
   final double padding;
   final Function() handler;
+
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) { 
@@ -26,20 +31,22 @@ class Button extends StatelessWidget {
       width: width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue, // color de fondo del botón
-          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // margen interno del botón
+          backgroundColor: Colors.blue,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0), // curvatura de los bordes
+            borderRadius: BorderRadius.circular(radius),
           ),
-          
         ),
         onPressed: handler,
-        child: Text(
-          labelText,
-          style: TextStyle(
-            fontSize: fontSize
-          ),  
-        ),
+        child: 
+        (child!=null) ? 
+          child : 
+          Text(
+            labelText,
+            style: TextStyle(
+              fontSize: fontSize
+            ),  
+          ), 
       ),
     );
   } 

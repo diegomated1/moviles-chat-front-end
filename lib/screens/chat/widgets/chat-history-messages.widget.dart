@@ -1,24 +1,28 @@
 import 'package:chat_client/models/message.model.dart';
 import 'package:flutter/material.dart';
 
-class ChatWidget extends StatelessWidget {
+class ChatHistoryWidget extends StatelessWidget {
 
-  ChatWidget({
+  const ChatHistoryWidget({
     super.key,
     required this.messages,
-    required this.sender
+    required this.sender,
+    required this.scrollController
   });
-  
+
+
   final MessagesModel messages;
   final String sender;
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      reverse: true,
+      controller: scrollController,
       itemCount: messages.messages.length,
       itemBuilder: (context, index) {
-        final message = messages.messages[index];
-
+        final message = messages.messages[messages.messages.length - 1 - index];
         return Align(
           alignment: message.emailUserSender==sender ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(

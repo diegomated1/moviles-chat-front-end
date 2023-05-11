@@ -2,6 +2,7 @@ import 'package:chat_client/models/user.model.dart';
 import 'package:chat_client/screens/profile/widgets/profile-other.user.widget.dart';
 import 'package:chat_client/screens/profile/widgets/profile-user.widget.dart';
 import 'package:chat_client/screens/users/users.screen.dart';
+import 'package:chat_client/widgets/IconImage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,17 +60,30 @@ class _Profile extends State<Profile>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Profile'),
       ),
       body: Center(
         child: FittedBox(
-          child: (user!=null) ?
-            (isUser) ? 
-              ProfileUser(user: user!) :
-              ProfileOtherUser(user: user!)
-          : const Text('cargando')
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: IconImage(
+                  image: (user!=null)?user!.email:null,
+                  width: 140, height: 140,
+                )
+              ),
+              const SizedBox(height: 20,),
+              (user!=null) ?
+                (isUser) ? 
+                  ProfileUser(user: user!) :
+                  ProfileOtherUser(user: user!)
+              : const Text('cargando')
+            ],
+          )
         ),
       ),
     );
   }
 }
+

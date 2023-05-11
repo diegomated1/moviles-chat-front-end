@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:chat_client/models/user.model.dart';
 import 'package:chat_client/screens/profile/profile.screen.dart';
-import 'package:chat_client/screens/register/widgets/iconImage.dart';
+import 'package:chat_client/screens/register/widgets/iconEditImage.dart';
 import 'package:chat_client/screens/register/widgets/modalImage.dart';
 import 'package:chat_client/services/chat-api-service.dart';
 import 'package:chat_client/utils/utils.dart';
@@ -102,7 +102,7 @@ class _Register extends State<Register> {
                   height: 80,
                   child: Align(
                     alignment: Alignment.center,
-                    child: IconImage(
+                    child: IconEditImage(
                       image: _imageFile, 
                       handler: () {
                         showModal();
