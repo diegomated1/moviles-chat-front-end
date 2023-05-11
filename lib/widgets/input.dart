@@ -4,9 +4,10 @@ class Input extends StatelessWidget {
   const Input({
     super.key,
     this.type = TextInputType.text,
-    this.width = double.infinity,
+    this.width = 330,
     this.padding = 10.0,
     this.hidden = false,
+    this.icon = Icons.person,
     required this.labelText,
     required this.handler,
   });
@@ -16,6 +17,7 @@ class Input extends StatelessWidget {
   final double padding;
   final bool hidden;
   final double width;
+  final IconData icon;
   final Function(String labelText, String newValue) handler;
 
   @override
@@ -36,7 +38,11 @@ class Input extends StatelessWidget {
         },
         decoration: InputDecoration(
           labelText: labelText,
-          border: const OutlineInputBorder(),
+          prefixIcon: Icon(icon),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
         ),
         obscureText: hidden,
       ),

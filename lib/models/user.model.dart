@@ -40,7 +40,7 @@ class UserModel {
       'second_name': secondName,
       'job_ocupation': jobOcupation,
       'number_phone': numberPhone,
-      'tokens': tokens,
+      'tokens': tokens.toString(),
     };
   }
 }

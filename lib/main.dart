@@ -37,9 +37,6 @@ Future<dynamic> _firebaseMessagingBackgroundHandler(RemoteMessage message) async
 }
 
 void main() async {
-
-  
-
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   var androidIni = const AndroidInitializationSettings('mipmap/ic_launcher');

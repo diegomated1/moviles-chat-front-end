@@ -2,6 +2,7 @@ import 'package:chat_client/screens/loading/loading.screen.dart';
 import 'package:chat_client/screens/profile/profile.screen.dart';
 import 'package:chat_client/screens/register/register.screen.dart';
 import 'package:chat_client/services/chat-api-service.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,14 +64,32 @@ class _Login extends State<Login> {
             key: loginForm,
             child: Column(
               children: [
-                Input(labelText: 'Email', handler: change, width: 330,),
-                Input(labelText: 'Password', handler: change, hidden: true, width: 330),
-                Button(labelText: 'Login', handler: (){
+                Input(labelText: 'Email', handler: change, ),
+                Input(labelText: 'Password', handler: change, hidden: true, icon: Icons.lock,),
+                Button(labelText: 'SIGN IN', handler: (){
                   submit(context);
                 },),
-                Button(labelText: 'Register', handler: (){
-                  Get.to(()=>const Register());
-                },),
+                const SizedBox(height: 10,),
+                RichText(
+                  text: TextSpan(
+                    text: '¿No tienes una cuenta? ',
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: 'Regístrate',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Get.to(()=> const Register());
+                          },
+                      ),
+                    ]
+                  )
+                )
               ],
             ),
           ),
