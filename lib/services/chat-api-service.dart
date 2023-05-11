@@ -1,5 +1,7 @@
 
 
+import 'dart:io';
+
 import 'package:chat_client/models/message.model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -46,16 +48,26 @@ class ChatApi {
     }
   }
 
-  Future<String?> register({required UserModel user, required String token, required String password}) async {
+  Future<String?> register({required UserModel user, required String token, required String password, File? imageFile}) async {
     try{
       var headers = {
-        "Content-type": "application/json",
+        "Content-type": "multipart/form-data",
       };
-      var body = json.encode({...user.toMap(), "token": token, "password": password});
+      Map<String, String> body = {...user.toMap(), "token": token, "password": password};
+      final request = http.MultipartRequest('POST', Uri.parse('$url/register'));
+      request.headers.addAll(headers);
 
-      var response = await http.post(Uri.parse('$url/register'), headers: headers, body: body);
+      if(imageFile!=null){
+        final image = await http.MultipartFile.fromPath('user_image', imageFile.path);
+        request.files.add(image);
+      }
+
+      request.fields.addAll(body);
+
+      var response = await request.send();
       if(response.statusCode == 200){
-        return json.decode(response.body)['data'];
+        final responseBody = await response.stream.bytesToString();
+        return json.decode(responseBody)['data'];
       } else {
         return null;
       }
