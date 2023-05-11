@@ -32,9 +32,10 @@ class _Login extends State<Login> {
   submit(BuildContext context)async{
     if(loginForm.currentState!.validate()){
       loginForm.currentState!.save();
-      var sessionToken = await ChatApi().login(email: userInfo['email']!, password: userInfo['password']!, tokenFCM: '123');
+      final prefs = await SharedPreferences.getInstance();
+      String? fcmToken = prefs.getString('FcmToken');
+      var sessionToken = await ChatApi().login(email: userInfo['email']!, password: userInfo['password']!, tokenFCM: fcmToken!);
       if(sessionToken!=null){
-        final prefs = await SharedPreferences.getInstance();
         prefs.setString('sessionToken', sessionToken);
         Get.to(()=>const LoadingScreen());
       }else{

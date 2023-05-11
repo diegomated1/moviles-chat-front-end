@@ -11,6 +11,7 @@ class SocketConnection{
 
     socket = IO.io(dotenv.env['CHAT_SOCKET_URL']!, <String, dynamic>{
       "transports": ["websocket"],
+      "path": "/apichats/",
       "query": {"id_chat": users.join("")}
     });
     socket!.onConnect((_) {

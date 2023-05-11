@@ -46,12 +46,12 @@ class ChatApi {
     }
   }
 
-  Future<String?> register({required UserModel user, required String password}) async {
+  Future<String?> register({required UserModel user, required String token, required String password}) async {
     try{
       var headers = {
         "Content-type": "application/json",
       };
-      var body = json.encode({...user.toMap(), "token": '123', "password": password});
+      var body = json.encode({...user.toMap(), "token": token, "password": password});
 
       var response = await http.post(Uri.parse('$url/register'), headers: headers, body: body);
       if(response.statusCode == 200){

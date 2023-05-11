@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1041186546781",
+    "project_id": "primero-170a0",
+    "storage_bucket": "primero-170a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041186546781:android:edceb99ef28df8997f19b4",
+        "android_client_info": {
+          "package_name": "com.primero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041186546781-8kjl00om1iqdjkddb4isp0r09oas3tqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmiggdvsMGciQtwoHyNul-IgkkZ0W9xJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041186546781-8kjl00om1iqdjkddb4isp0r09oas3tqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

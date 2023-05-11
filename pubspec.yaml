@@ -31,6 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_local_notifications: ^14.0.0+1
+  firebase_core: ^2.11.0
+  firebase_messaging: ^14.5.0
   socket_io_client: ^2.0.2
   http: ^0.13.6
   shared_preferences: ^2.1.0

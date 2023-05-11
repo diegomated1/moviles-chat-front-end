@@ -37,9 +37,10 @@ class _Register extends State<Register> {
   submit(BuildContext context)async{
     if(loginForm.currentState!.validate()){
       loginForm.currentState!.save();
-      var sessionToken = await ChatApi().register(user: UserModel.fromJson({...userInfo, "tokens": []}), password: userInfo['password']);
+      final prefs = await SharedPreferences.getInstance();
+      String? fcmToken = prefs.getString('FcmToken');
+      var sessionToken = await ChatApi().register(user: UserModel.fromJson({...userInfo, "tokens": []}), token: fcmToken!, password: userInfo['password']);
       if(sessionToken!=null){
-        final prefs = await SharedPreferences.getInstance();
         prefs.setString('sessionToken', sessionToken);
         Get.to(()=>const LoadingScreen());
       }else{
