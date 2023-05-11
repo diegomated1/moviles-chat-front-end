@@ -30,24 +30,36 @@ class _Profile extends State<Profile>{
     super.initState();
     handleAuth() async {
       try{
+        final prefs = await SharedPreferences.getInstance();
+        final sessionToken = prefs.getString('sessionToken');
+        if(sessionToken==null){
+          Get.to(()=>const Login());
+          return;
+        }
+        var userApi = await ChatApi().auth(sessionToken: sessionToken);
+        if(userApi==null){
+          Get.to(()=>const Login());
+          return;
+        }
+
         final String? email = Get.arguments;
         if(email!=null){
-          var userApi = await ChatApi().getByEmail(email: email);
+          var otherUserApi = await ChatApi().getByEmail(email: email);
+          if(otherUserApi==null){
+            Get.to(()=>const Users());
+            return;
+          }
           setState(() {
-            user = userApi;
+            user = otherUserApi;
+            if(userApi.email==otherUserApi.email){
+              isUser = true;
+            }
           });
         }else{
-          final prefs = await SharedPreferences.getInstance();
-          final sessionToken = prefs.getString('sessionToken');
-          if(sessionToken!=null){
-            var userApi = await ChatApi().auth(sessionToken: sessionToken);
-            setState(() {
-              user = userApi;
-              isUser = true;
-            });
-          }else{
-            Get.to(()=>const Login());
-          }
+          setState(() {
+            user = userApi;
+            isUser = true;
+          });
         }
       }catch(error){
         Get.to(()=>const Login());

@@ -41,8 +41,6 @@ class _Lista extends State<Lista> {
               return Tarjeta(
                 email: snapshot.data!.users[index].email,
                 fullname: '${snapshot.data!.users[index].name} ${snapshot.data!.users[index].secondName}',
-                jobOcupation: snapshot.data!.users[index].jobOcupation,
-                numberPhone: snapshot.data!.users[index].numberPhone
               );
             },
           );
